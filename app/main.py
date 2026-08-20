@@ -3,6 +3,7 @@ import time
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 from contextlib import asynccontextmanager
 
@@ -38,6 +39,8 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan,
 )
+
+app.mount("/demo", StaticFiles(directory="static", html=True), name="demo")
 
 app.add_middleware(
     CORSMiddleware,
