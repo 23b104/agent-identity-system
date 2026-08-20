@@ -6,7 +6,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app ./app
-
+COPY static ./static
 # Render/Railway/Fly all inject $PORT — default to 8000 for local docker run.
 ENV PORT=8000
 EXPOSE 8000
