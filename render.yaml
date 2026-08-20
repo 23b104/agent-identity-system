@@ -1,0 +1,34 @@
+# Render Blueprint — deploy with "New + Blueprint" pointing at this repo.
+# Render's free tier: no AWS, no credit card, HTTPS out of the box.
+# Docs: https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: agent-identity-system
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: ADMIN_API_KEY
+        generateValue: true          # Render generates a strong random value
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DEFAULT_CREDENTIAL_TTL_DAYS
+        value: "90"
+      - key: STALE_THRESHOLD_DAYS
+        value: "30"
+      - key: GROQ_API_KEY
+        sync: false                  # set manually in Render dashboard (free key from console.groq.com)
+      - key: GROQ_MODEL
+        value: "llama-3.3-70b-versatile"
+      - key: AI_REVIEW_INTERVAL_HOURS
+        value: "6"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: agent-identity-db
+          property: connectionString
+
+databases:
+  - name: agent-identity-db
+    plan: free
+    databaseName: agent_identity
+    user: agent_identity
